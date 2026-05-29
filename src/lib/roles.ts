@@ -31,14 +31,12 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },
-    { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
   it: [
     { href: "/dashboard", labelKey: "dashboard" },
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },
-    { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
   leadership: [{ href: "/dashboards", labelKey: "leadershipDashboards" }],
 };

@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import { signOut } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { Text } from "@/components/text";
-import { getCurrentStaff } from "@/lib/auth";
+import { requireStaffRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function RoutePage() {
-  const staff = await getCurrentStaff();
+  const staff = await requireStaffRole(["leadership"]);
 
   return (
     <Suspense>
