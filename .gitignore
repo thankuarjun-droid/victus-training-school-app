@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.env*.local
+.env
+coverage
+.DS_Store
+
+tsconfig.tsbuildinfo
+
+# Local visual QA captures (do not commit binary screenshots)
+screenshots/
+*.png
