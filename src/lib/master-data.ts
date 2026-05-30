@@ -42,6 +42,19 @@ type RawCsvRow = Record<string, string | undefined>;
 
 const requiredHeaders = ["op_no", "name_en", "name_ta"] as const;
 
+export function dedupeByConflictKey<Row>(rows: readonly Row[], getKey: (row: Row) => string | null | undefined): Row[] {
+  const dedupedRows = new Map<string, Row>();
+
+  rows.forEach((row) => {
+    const key = getKey(row);
+    if (key) {
+      dedupedRows.set(key, row);
+    }
+  });
+
+  return Array.from(dedupedRows.values());
+}
+
 function normalizeHeader(header: string): string {
   return header.trim().toLowerCase().replaceAll(" ", "_");
 }
