@@ -85,6 +85,52 @@ as $$
   select role from staff where auth_uid = auth.uid() and active is true limit 1;
 $$;
 
+create or replace function claim_bootstrap_it_staff()
+returns staff
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  claimed_staff staff;
+begin
+  if auth.uid() is null then
+    return null;
+  end if;
+
+  select * into claimed_staff
+  from staff
+  where auth_uid = auth.uid() and active is true
+  limit 1;
+
+  if found then
+    return claimed_staff;
+  end if;
+
+  -- Bootstrap guard: only the first authenticated user in a fresh project may claim the seeded IT role.
+  if exists (select 1 from staff where auth_uid is not null and active is true) then
+    return null;
+  end if;
+
+  update staff
+  set auth_uid = auth.uid()
+  where id = (
+    select id
+    from staff
+    where role = 'it' and name = 'Sudhagar' and auth_uid is null and active is true
+    order by name
+    limit 1
+    for update
+  )
+  returning * into claimed_staff;
+
+  return claimed_staff;
+end;
+$$;
+
+revoke all on function claim_bootstrap_it_staff() from public;
+grant execute on function claim_bootstrap_it_staff() to authenticated;
+
 alter table machine_types enable row level security;
 alter table styles enable row level security;
 alter table operations enable row level security;
