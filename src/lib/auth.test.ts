@@ -15,6 +15,7 @@ const redirectMock = vi.hoisted(() =>
 const authState = vi.hoisted(() => ({
   user: { id: "auth-user-1" } as { id: string } | null,
   staff: null as MockStaffRow | null,
+  bootstrappedStaff: null as MockStaffRow | null,
 }));
 
 vi.mock("next/navigation", () => ({
@@ -39,10 +40,14 @@ vi.mock("@/lib/supabase", () => ({
         }),
       }),
     }),
+    rpc: async () => ({
+      data: authState.bootstrappedStaff,
+      error: authState.bootstrappedStaff ? null : { message: "Bootstrap staff unavailable" },
+    }),
   }),
 }));
 
-import { requireStaffRole } from "./auth";
+import { getCurrentStaff, requireStaffRole } from "./auth";
 import { protectedRouteRoles } from "./roles";
 
 describe("requireStaffRole", () => {
@@ -54,6 +59,7 @@ describe("requireStaffRole", () => {
       name: "Leadership User",
       role: "leadership",
     };
+    authState.bootstrappedStaff = null;
   });
 
   it("returns the current staff member when the role is allowed", async () => {
@@ -75,6 +81,21 @@ describe("requireStaffRole", () => {
 
     await expect(requireStaffRole(protectedRouteRoles.dashboards)).rejects.toThrow("NEXT_REDIRECT:/dashboard");
     expect(redirectMock).toHaveBeenCalledWith("/dashboard");
+  });
+
+  it("claims the seeded IT bootstrap staff when a signed-in user has no staff row yet", async () => {
+    authState.staff = null;
+    authState.bootstrappedStaff = {
+      id: "staff-bootstrap",
+      name: "Sudhagar",
+      role: "it",
+    };
+
+    await expect(getCurrentStaff()).resolves.toEqual({
+      id: "staff-bootstrap",
+      name: "Sudhagar",
+      role: "it",
+    });
   });
 
   it("redirects unauthenticated users to login before checking allowed roles", async () => {
