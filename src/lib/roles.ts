@@ -19,44 +19,31 @@ export type NavItem = {
 
 export const roleNav: Record<StaffRole, NavItem[]> = {
   school_trainer: [
-    { href: "/master-data", labelKey: "masterData" },
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },
   ],
-  ojt_coach: [
-    { href: "/master-data", labelKey: "masterData" },
-    { href: "/dashboard", labelKey: "dashboard" },
-  ],
-  lpi_coach: [
-    { href: "/master-data", labelKey: "masterData" },
-    { href: "/dashboard", labelKey: "dashboard" },
-  ],
-  mechanic: [
-    { href: "/master-data", labelKey: "masterData" },
-    { href: "/dashboard", labelKey: "dashboard" },
-  ],
+  ojt_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
+  lpi_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
+  mechanic: [{ href: "/dashboard", labelKey: "dashboard" }],
   coordinator: [
     { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/master-data", labelKey: "masterData" },
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },
-    { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
   it: [
     { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/master-data", labelKey: "masterData" },
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },
-    { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
-  leadership: [
-    { href: "/master-data", labelKey: "masterData" },
-    { href: "/dashboards", labelKey: "leadershipDashboards" },
-  ],
+  leadership: [{ href: "/dashboards", labelKey: "leadershipDashboards" }],
 };
+
+export const protectedRouteRoles = {
+  dashboards: ["leadership"],
+} as const satisfies Record<string, readonly StaffRole[]>;
 
 export function isStaffRole(value: string | null | undefined): value is StaffRole {
   return staffRoles.includes(value as StaffRole);
