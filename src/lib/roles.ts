@@ -41,6 +41,10 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
   leadership: [{ href: "/dashboards", labelKey: "leadershipDashboards" }],
 };
 
+export const protectedRouteRoles = {
+  dashboards: ["leadership"],
+} as const satisfies Record<string, readonly StaffRole[]>;
+
 export function isStaffRole(value: string | null | undefined): value is StaffRole {
   return staffRoles.includes(value as StaffRole);
 }
