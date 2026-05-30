@@ -1,6 +1,6 @@
 # Victus Training School App
 
-Phase 0 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
+Phase 0–1 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
 
 ## Phase 0 scope
 
@@ -10,15 +10,16 @@ Phase 0 scaffold for the Navvi × Victus Sewing Operator Training School pilot a
 - Supabase browser/server clients for Auth and Postgres, with Netlify Free deployment compatibility and no Vercel-only features.
 - Role-aware navigation for `school_trainer`, `ojt_coach`, `lpi_coach`, `mechanic`, `coordinator`, `it`, and `leadership`.
 - Supabase Phase 0 migration with machine allowance multipliers, RONNY reference style, only the three locked RONNY SMVs, demo staff roles, and one demo batch.
-- Formula library and tests for cycle summary, school efficiency, standard capacity, and OJT line efficiency.
+- Formula library and tests for cycle summary, school efficiency, standard capacity, SAM, and OJT line efficiency.
 
-## Routes added in Phase 0
+## Routes added
 
 | Route | Purpose | Notes |
 |---|---|---|
 | `/` | Pilot landing page | Includes role navigation preview for environments without Supabase env vars. |
 | `/login` | Supabase email/password login | Phone auth can be enabled in Supabase for the pilot. |
 | `/dashboard` | Role-gated shell preview | Shows live staff context when Supabase Auth is configured. |
+| `/master-data` | Phase 1 master data | OB CSV import plus read views for operations and Five-Loop exercises. |
 | `/time-study` | Phase 0 placeholder | Visible to roles that will use time-study in later phases. |
 | `/panels` | Phase 0 placeholder | Visible to panel-capable roles. |
 | `/batches` | Phase 0 placeholder | Represents a school trainer's own batch view. |
@@ -56,7 +57,17 @@ The Phase 0 migration seeds the five machine types and locked RONNY SMVs exactly
 - Neck Rib (Rib Attach): `0.627`
 - Sleeve Attach: `0.732`
 
-All other RONNY operation SMVs remain out of scope until Phase 1 import.
+All other RONNY operation SMVs remain pending import unless provided by the Phase 1 OB CSV import.
+
+## Phase 1 CSV import
+
+The `/master-data` route accepts CSV rows with these useful headers:
+
+```csv
+op_no,name_en,name_ta,machine_code,base_min,step_no,step_description_en,step_description_ta,checkpoint_no,checkpoint_en,checkpoint_ta,skill_key,skill_value,exercise_stage
+```
+
+Locked RONNY SMVs are preserved for Shoulder Join, Neck Rib (Rib Attach), and Sleeve Attach. Other operations stay `NULL`/pending unless the user imports a real SMV. If `base_min` and `machine_code` are supplied, SAM is calculated as base time × the machine-specific allowance multiplier.
 
 ## Assumptions to confirm
 
