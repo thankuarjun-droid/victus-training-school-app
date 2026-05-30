@@ -47,6 +47,11 @@ export function calculateSamFromBase(baseMin: number, allowanceMultiplier: numbe
   assertPositiveNumber(allowanceMultiplier, "allowance multiplier");
 
   return baseMin * allowanceMultiplier;
+export function calculateSamFromBase(baseTimeMin: number, machineAllowanceMultiplier: number): number {
+  assertPositiveNumber(baseTimeMin, "base time");
+  assertPositiveNumber(machineAllowanceMultiplier, "machine allowance multiplier");
+
+  return baseTimeMin * machineAllowanceMultiplier;
 }
 
 export function calculateOjtEfficiencyPct(

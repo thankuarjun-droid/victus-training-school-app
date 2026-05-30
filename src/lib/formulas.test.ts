@@ -28,6 +28,8 @@ describe("training formulas", () => {
 
   it("calculates SAM using the machine-specific allowance multiplier", () => {
     expect(calculateSamFromBase(0.5, 1.24)).toBeCloseTo(0.62, 2);
+  it("calculates SAM with machine-specific allowance multiplier", () => {
+    expect(calculateSamFromBase(0.5, 1.32)).toBeCloseTo(0.66, 2);
   });
 
   it("uses the separate OJT line-efficiency formula", () => {
