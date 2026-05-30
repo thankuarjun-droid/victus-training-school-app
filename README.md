@@ -1,6 +1,7 @@
 # Victus Training School App
 
 Phase 0–3 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
+Phase 0–1 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
 
 ## Phase 0 scope
 
@@ -23,6 +24,8 @@ Phase 0–3 scaffold for the Navvi × Victus Sewing Operator Training School pil
 | `/registry` | Phase 2 registry | Batches, trainees, trainer/operation assignments, staff-role entry, and capacity warnings. |
 | `/time-study` | Phase 0 placeholder | Visible to roles that will use time-study in later phases. |
 | `/panels` | Phase 3 trial panel register | Inward, issue, return, scrap, cascade re-issue, balances, and ledger. |
+| `/time-study` | Phase 0 placeholder | Visible to roles that will use time-study in later phases. |
+| `/panels` | Phase 0 placeholder | Visible to panel-capable roles. |
 | `/batches` | Phase 0 placeholder | Represents a school trainer's own batch view. |
 | `/dashboards` | Phase 0 placeholder | Leadership read-only dashboard entry point. |
 

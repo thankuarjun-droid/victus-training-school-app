@@ -264,6 +264,7 @@ type Table<Row, Insert, Update = Partial<Insert>> = {
   Update: Update;
   Relationships: [];
 };
+type StaffUpdate = Partial<StaffInsert>;
 
 export type Database = {
   public: {
@@ -287,6 +288,14 @@ export type Database = {
         Relationships: [];
       };
     };
+      staff: {
+        Row: StaffRow;
+        Insert: StaffInsert;
+        Update: StaffUpdate;
+        Relationships: [];
+      };
+    };
+    Views: Record<string, never>;
     Functions: {
       current_staff_role: { Args: Record<string, never>; Returns: StaffRole | null };
       current_staff_id: { Args: Record<string, never>; Returns: string | null };
@@ -296,6 +305,7 @@ export type Database = {
       machine_code: MachineCode;
       trainee_status: TraineeStatus;
       panel_txn: PanelTxnType;
+      machine_code: "SNLS" | "4T_OL" | "F_LTR" | "F_LFO" | "F_LCB";
     };
     CompositeTypes: Record<string, never>;
   };

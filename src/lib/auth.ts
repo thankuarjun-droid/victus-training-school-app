@@ -44,3 +44,13 @@ export async function requireCurrentStaff(): Promise<CurrentStaff> {
   }
   return staff;
 }
+
+export async function requireStaffRole(allowedRoles: readonly StaffRole[]): Promise<CurrentStaff> {
+  const staff = await requireCurrentStaff();
+
+  if (!allowedRoles.includes(staff.role)) {
+    redirect("/dashboard");
+  }
+
+  return staff;
+}
