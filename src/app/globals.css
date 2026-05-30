@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+}
+
+:lang(ta) {
+  font-family: "Nirmala UI", Latha, Arial, sans-serif;
+}
