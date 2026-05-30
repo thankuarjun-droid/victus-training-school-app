@@ -43,6 +43,7 @@ vi.mock("@/lib/supabase", () => ({
 }));
 
 import { requireStaffRole } from "./auth";
+import { protectedRouteRoles } from "./roles";
 
 describe("requireStaffRole", () => {
   beforeEach(() => {
@@ -56,7 +57,7 @@ describe("requireStaffRole", () => {
   });
 
   it("returns the current staff member when the role is allowed", async () => {
-    await expect(requireStaffRole(["leadership"])).resolves.toEqual({
+    await expect(requireStaffRole(protectedRouteRoles.dashboards)).resolves.toEqual({
       id: "staff-1",
       name: "Leadership User",
       role: "leadership",
@@ -72,14 +73,14 @@ describe("requireStaffRole", () => {
       role: "school_trainer",
     };
 
-    await expect(requireStaffRole(["leadership"])).rejects.toThrow("NEXT_REDIRECT:/dashboard");
+    await expect(requireStaffRole(protectedRouteRoles.dashboards)).rejects.toThrow("NEXT_REDIRECT:/dashboard");
     expect(redirectMock).toHaveBeenCalledWith("/dashboard");
   });
 
   it("redirects unauthenticated users to login before checking allowed roles", async () => {
     authState.user = null;
 
-    await expect(requireStaffRole(["leadership"])).rejects.toThrow("NEXT_REDIRECT:/login");
+    await expect(requireStaffRole(protectedRouteRoles.dashboards)).rejects.toThrow("NEXT_REDIRECT:/login");
     expect(redirectMock).toHaveBeenCalledWith("/login");
   });
 });

@@ -4,11 +4,12 @@ import { signOut } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { Text } from "@/components/text";
 import { requireStaffRole } from "@/lib/auth";
+import { protectedRouteRoles } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
 
 export default async function RoutePage() {
-  const staff = await requireStaffRole(["leadership"]);
+  const staff = await requireStaffRole(protectedRouteRoles.dashboards);
 
   return (
     <Suspense>
