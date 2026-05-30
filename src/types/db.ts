@@ -4,6 +4,7 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 
 export type MachineCode = "SNLS" | "4T_OL" | "F_LTR" | "F_LFO" | "F_LCB";
 export type TraineeStatus = "active" | "handed_over" | "dropped" | "on_lpi";
+export type PanelTxnType = "inward" | "issue" | "return" | "reissue" | "scrap";
 
 type StaffRow = {
   id: string;
@@ -107,6 +108,37 @@ type TraineeRow = {
   created_at: string | null;
 };
 
+
+type PanelTypeRow = {
+  id: string;
+  style_id: string | null;
+  name_en: string;
+  name_ta: string | null;
+  cascade_order: number | null;
+};
+
+type PanelTransactionRow = {
+  id: string;
+  txn_type: PanelTxnType;
+  panel_type_id: string | null;
+  qty: number;
+  txn_date: string | null;
+  received_from: string | null;
+  cutting_ref: string | null;
+  trainee_id: string | null;
+  operation_id: string | null;
+  from_operation_id: string | null;
+  staff_id: string | null;
+  condition: string | null;
+  notes: string | null;
+};
+
+type PanelBalanceRow = {
+  panel_type_id: string | null;
+  name_en: string | null;
+  balance: number | null;
+};
+
 type LoopRow = {
   id: string;
   loop_no: number;
@@ -191,6 +223,30 @@ type TraineeInsert = {
   created_at?: string | null;
 };
 
+
+type PanelTypeInsert = {
+  id?: string;
+  style_id?: string | null;
+  name_en: string;
+  name_ta?: string | null;
+  cascade_order?: number | null;
+};
+type PanelTransactionInsert = {
+  id?: string;
+  txn_type: PanelTxnType;
+  panel_type_id?: string | null;
+  qty: number;
+  txn_date?: string | null;
+  received_from?: string | null;
+  cutting_ref?: string | null;
+  trainee_id?: string | null;
+  operation_id?: string | null;
+  from_operation_id?: string | null;
+  staff_id?: string | null;
+  condition?: string | null;
+  notes?: string | null;
+};
+
 type LoopInsert = {
   id?: string;
   loop_no: number;
@@ -215,6 +271,8 @@ export type Database = {
       staff: Table<StaffRow, StaffInsert, StaffUpdate>;
       batches: Table<BatchRow, BatchInsert>;
       trainees: Table<TraineeRow, TraineeInsert>;
+      panel_types: Table<PanelTypeRow, PanelTypeInsert>;
+      panel_transactions: Table<PanelTransactionRow, PanelTransactionInsert>;
       machine_types: Table<MachineTypeRow, MachineTypeInsert>;
       styles: Table<StyleRow, StyleInsert>;
       operations: Table<OperationRow, OperationInsert>;
@@ -223,7 +281,12 @@ export type Database = {
       quality_checkpoints: Table<QualityCheckpointRow, QualityCheckpointInsert>;
       loops: Table<LoopRow, LoopInsert>;
     };
-    Views: Record<string, never>;
+    Views: {
+      v_panel_balance: {
+        Row: PanelBalanceRow;
+        Relationships: [];
+      };
+    };
     Functions: {
       current_staff_role: { Args: Record<string, never>; Returns: StaffRole | null };
       current_staff_id: { Args: Record<string, never>; Returns: string | null };
@@ -232,6 +295,7 @@ export type Database = {
       staff_role: StaffRole;
       machine_code: MachineCode;
       trainee_status: TraineeStatus;
+      panel_txn: PanelTxnType;
     };
     CompositeTypes: Record<string, never>;
   };

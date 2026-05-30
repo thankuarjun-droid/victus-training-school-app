@@ -1,6 +1,6 @@
 # Victus Training School App
 
-Phase 0–2 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
+Phase 0–3 scaffold for the Navvi × Victus Sewing Operator Training School pilot at the Sivagangai Unit.
 
 ## Phase 0 scope
 
@@ -22,7 +22,7 @@ Phase 0–2 scaffold for the Navvi × Victus Sewing Operator Training School pil
 | `/master-data` | Phase 1 master data | OB CSV import plus read views for operations and Five-Loop exercises. |
 | `/registry` | Phase 2 registry | Batches, trainees, trainer/operation assignments, staff-role entry, and capacity warnings. |
 | `/time-study` | Phase 0 placeholder | Visible to roles that will use time-study in later phases. |
-| `/panels` | Phase 0 placeholder | Visible to panel-capable roles. |
+| `/panels` | Phase 3 trial panel register | Inward, issue, return, scrap, cascade re-issue, balances, and ledger. |
 | `/batches` | Phase 0 placeholder | Represents a school trainer's own batch view. |
 | `/dashboards` | Phase 0 placeholder | Leadership read-only dashboard entry point. |
 
@@ -81,8 +81,19 @@ The `/registry` route supports:
 
 Phase 2 adds the `trainees` table and registry RLS policies. Existing `batches` and `staff` tables from Phase 0 are reused and typed for the app.
 
+## Phase 3 trial panel register
+
+The `/panels` route supports:
+
+- Panel inward entries from cutting with cutting reference.
+- Issue to trainee/operation with available-balance blocking.
+- Return and scrap ledger entries.
+- Cascade re-issue using the Op1 → Op3 → Op4 → Op5 → Op12 chain.
+- Running panel balances via `v_panel_balance`.
+
 ## Assumptions to confirm
 
 - The build prompt says Phase 0 seeds “5 roles,” but the authoritative role matrix lists seven roles. Phase 0 seeds all seven roles so role-gated navigation matches the matrix.
 - The RONNY op number for Sleeve Attach is not specified in the current docs. Phase 0 seeds it at provisional `op_no = 6` with a SQL comment so Victus can correct it during the Phase 1 full OB import.
 - Phase 2 write access is limited to coordinator/IT for batches and trainees, and IT for staff records, matching the current RLS role matrix.
+- Phase 3 panel transactions are writable by school trainer/coordinator/IT; all authenticated roles can read panel balances per the current role matrix.
