@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { parseObCsv, summarizeImportedOperations } from "@/lib/master-data";
+import { dedupeByConflictKey, parseObCsv, summarizeImportedOperations } from "@/lib/master-data";
 import { createSupabaseServerClient, hasSupabaseConfig } from "@/lib/supabase";
 
 export async function importObCsv(formData: FormData): Promise<void> {
@@ -65,17 +65,20 @@ export async function importObCsv(formData: FormData): Promise<void> {
   }
 
   const operationIdByOpNo = new Map(operations.map((operation) => [operation.op_no, operation.id]));
-  const stepRows = rows
-    .filter((row) => row.stepNo !== null && row.stepDescriptionEn && row.stepDescriptionTa)
-    .map((row) => ({
-      operation_id: operationIdByOpNo.get(row.opNo) ?? null,
-      step_no: row.stepNo ?? 0,
-      description_en: row.stepDescriptionEn,
-      description_ta: row.stepDescriptionTa,
-      instruction_en: row.stepDescriptionEn,
-      instruction_ta: row.stepDescriptionTa,
-    }))
-    .filter((row) => row.operation_id);
+  const stepRows = dedupeByConflictKey(
+    rows
+      .filter((row) => row.stepNo !== null && row.stepDescriptionEn && row.stepDescriptionTa)
+      .map((row) => ({
+        operation_id: operationIdByOpNo.get(row.opNo) ?? null,
+        step_no: row.stepNo ?? 0,
+        description_en: row.stepDescriptionEn,
+        description_ta: row.stepDescriptionTa,
+        instruction_en: row.stepDescriptionEn,
+        instruction_ta: row.stepDescriptionTa,
+      }))
+      .filter((row) => row.operation_id),
+    (row) => (row.operation_id ? `${row.operation_id}:${row.step_no}` : null),
+  );
 
   if (stepRows.length > 0) {
     const { error } = await supabase.from("operation_steps").upsert(stepRows, { onConflict: "operation_id,step_no" });
@@ -84,17 +87,20 @@ export async function importObCsv(formData: FormData): Promise<void> {
     }
   }
 
-  const checkpointRows = rows
-    .filter((row) => row.checkpointNo !== null && row.checkpointEn && row.checkpointTa)
-    .map((row) => ({
-      operation_id: operationIdByOpNo.get(row.opNo) ?? null,
-      checkpoint_no: row.checkpointNo ?? 0,
-      description_en: row.checkpointEn ?? "",
-      description_ta: row.checkpointTa ?? "",
-      check_method: null,
-      tolerance: null,
-    }))
-    .filter((row) => row.operation_id);
+  const checkpointRows = dedupeByConflictKey(
+    rows
+      .filter((row) => row.checkpointNo !== null && row.checkpointEn && row.checkpointTa)
+      .map((row) => ({
+        operation_id: operationIdByOpNo.get(row.opNo) ?? null,
+        checkpoint_no: row.checkpointNo ?? 0,
+        description_en: row.checkpointEn ?? "",
+        description_ta: row.checkpointTa ?? "",
+        check_method: null,
+        tolerance: null,
+      }))
+      .filter((row) => row.operation_id),
+    (row) => (row.operation_id ? `${row.operation_id}:${row.checkpoint_no}` : null),
+  );
 
   if (checkpointRows.length > 0) {
     const { error } = await supabase
@@ -105,15 +111,18 @@ export async function importObCsv(formData: FormData): Promise<void> {
     }
   }
 
-  const skillRows = rows
-    .filter((row) => row.skillKey)
-    .map((row) => ({
-      operation_id: operationIdByOpNo.get(row.opNo) ?? null,
-      attr_key: row.skillKey ?? "",
-      attr_value: row.skillValue,
-      exercise_stage: row.exerciseStage,
-    }))
-    .filter((row) => row.operation_id);
+  const skillRows = dedupeByConflictKey(
+    rows
+      .filter((row) => row.skillKey)
+      .map((row) => ({
+        operation_id: operationIdByOpNo.get(row.opNo) ?? null,
+        attr_key: row.skillKey ?? "",
+        attr_value: row.skillValue,
+        exercise_stage: row.exerciseStage,
+      }))
+      .filter((row) => row.operation_id),
+    (row) => (row.operation_id ? `${row.operation_id}:${row.attr_key}:${row.exercise_stage ?? ""}` : null),
+  );
 
   if (skillRows.length > 0) {
     const { error } = await supabase
