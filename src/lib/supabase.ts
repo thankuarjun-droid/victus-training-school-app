@@ -23,6 +23,21 @@ export function createSupabaseBrowserClient() {
   return createBrowserClient<Database>(url, anonKey);
 }
 
+function safelySetServerCookie(
+  cookieStore: ReturnType<typeof cookies>,
+  name: string,
+  value: string,
+  options: CookieOptions,
+) {
+  try {
+    cookieStore.set({ name, value, ...options });
+  } catch {
+    // Server Components can read cookies but cannot write refreshed Supabase
+    // session cookies. Middleware/Server Actions run in writable contexts and
+    // will persist the refresh instead.
+  }
+}
+
 export function createSupabaseServerClient() {
   const { url, anonKey } = requireSupabaseConfig();
   const cookieStore = cookies();
@@ -33,10 +48,10 @@ export function createSupabaseServerClient() {
         return cookieStore.get(name)?.value;
       },
       set(name: string, value: string, options: CookieOptions) {
-        cookieStore.set({ name, value, ...options });
+        safelySetServerCookie(cookieStore, name, value, options);
       },
       remove(name: string, options: CookieOptions) {
-        cookieStore.set({ name, value: "", ...options });
+        safelySetServerCookie(cookieStore, name, "", options);
       },
     },
   });

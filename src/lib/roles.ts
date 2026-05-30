@@ -23,6 +23,7 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/registry", labelKey: "registry" },
+    { href: "/batches", labelKey: "batch" },
   ],
   ojt_coach: [
     { href: "/master-data", labelKey: "masterData" },
@@ -45,6 +46,7 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/registry", labelKey: "registry" },
+    { href: "/batches", labelKey: "batch" },
     { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
   it: [
@@ -53,6 +55,7 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/registry", labelKey: "registry" },
+    { href: "/batches", labelKey: "batch" },
     { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
   leadership: [
@@ -60,28 +63,6 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
     { href: "/registry", labelKey: "registry" },
     { href: "/dashboards", labelKey: "leadershipDashboards" },
   ],
-};
-
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  ojt_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
-  lpi_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
-  mechanic: [{ href: "/dashboard", labelKey: "dashboard" }],
-  coordinator: [
-    { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  it: [
-    { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  leadership: [{ href: "/dashboards", labelKey: "leadershipDashboards" }],
 };
 
 export const protectedRouteRoles = {
