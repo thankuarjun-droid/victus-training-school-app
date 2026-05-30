@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseObCsv, summarizeImportedOperations } from "./master-data";
+import { dedupeByConflictKey, parseObCsv, summarizeImportedOperations } from "./master-data";
 
 describe("OB CSV parser", () => {
   it("keeps only locked RONNY SMVs and flags pending imports", () => {
@@ -27,5 +27,21 @@ describe("OB CSV parser", () => {
       lockedSmvCount: 1,
       pendingImportCount: 1,
     });
+  });
+
+  it("deduplicates repeated conflict keys before bulk upserts", () => {
+    const rows = [
+      { operation_id: "op-1", step_no: 1, description_en: "first" },
+      { operation_id: "op-1", step_no: 1, description_en: "second" },
+      { operation_id: "op-1", step_no: 2, description_en: "third" },
+      { operation_id: null, step_no: 3, description_en: "ignored" },
+    ];
+
+    expect(
+      dedupeByConflictKey(rows, (row) => (row.operation_id ? `${row.operation_id}:${row.step_no}` : null)),
+    ).toEqual([
+      { operation_id: "op-1", step_no: 1, description_en: "second" },
+      { operation_id: "op-1", step_no: 2, description_en: "third" },
+    ]);
   });
 });
