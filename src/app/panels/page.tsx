@@ -135,14 +135,6 @@ export default async function PanelsPage({ searchParams }: { searchParams: Searc
   const staff = await getCurrentStaff();
   const panelsData = await getPanelsData();
   const canWrite = staff?.role === "school_trainer" || staff?.role === "coordinator" || staff?.role === "it";
-import { AppShell } from "@/components/app-shell";
-import { Text } from "@/components/text";
-import { getCurrentStaff } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
-
-export default async function RoutePage() {
-  const staff = await getCurrentStaff();
 
   return (
     <Suspense>
@@ -157,10 +149,6 @@ export default async function RoutePage() {
           trainees={panelsData.trainees}
           transactions={panelsData.transactions}
         />
-        <section className="rounded-3xl border border-navy/10 bg-white p-6 shadow-sm">
-          <Text as="h1" className="text-3xl font-black text-navy" copyKey="panels" />
-          <Text as="p" className="mt-3 text-slate-600" copyKey="comingSoon" />
-        </section>
       </AppShell>
     </Suspense>
   );

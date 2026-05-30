@@ -62,28 +62,6 @@ export const roleNav: Record<StaffRole, NavItem[]> = {
   ],
 };
 
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  ojt_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
-  lpi_coach: [{ href: "/dashboard", labelKey: "dashboard" }],
-  mechanic: [{ href: "/dashboard", labelKey: "dashboard" }],
-  coordinator: [
-    { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  it: [
-    { href: "/dashboard", labelKey: "dashboard" },
-    { href: "/time-study", labelKey: "timeStudy" },
-    { href: "/panels", labelKey: "panels" },
-    { href: "/batches", labelKey: "batch" },
-  ],
-  leadership: [{ href: "/dashboards", labelKey: "leadershipDashboards" }],
-};
-
 export const protectedRouteRoles = {
   dashboards: ["leadership"],
 } as const satisfies Record<string, readonly StaffRole[]>;

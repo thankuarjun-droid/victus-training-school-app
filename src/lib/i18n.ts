@@ -186,40 +186,6 @@ export const copy = {
   it: { en: "IT Admin", ta: "IT அட்மின்" },
   leadership: { en: "Leadership", ta: "லீடர்ஷிப்" },
 
-  masterData: { en: "Master data", ta: "மாஸ்டர் டேட்டா" },
-  masterDataBody: {
-    en: "Import the RONNY operation breakdown, steps, quality checkpoints, and skill attributes without changing locked SMVs.",
-    ta: "Locked SMV மாற்றாம RONNY operation breakdown, steps, quality checkpoints, skill attributes import பண்ணலாம்.",
-  },
-  phaseOneReady: { en: "Phase 1 ready", ta: "Phase 1 ரெடி" },
-  readOnlyMasterData: {
-    en: "Everyone can view master data; only coordinators and IT can import updates.",
-    ta: "எல்லாரும் master data பார்க்கலாம்; coordinator மற்றும் IT மட்டும் update import பண்ணலாம்.",
-  },
-  csvImport: { en: "CSV import", ta: "CSV import" },
-  csvImportHelp: {
-    en: "Paste OB rows with operation, machine, step, checkpoint, and skill columns.",
-    ta: "Operation, machine, step, checkpoint, skill columns உடன் OB rows paste பண்ணுங்க.",
-  },
-  importCsv: { en: "Import CSV", ta: "CSV import பண்ணு" },
-  sampleCsv: { en: "Reset sample", ta: "Sample மீண்டும் வை" },
-  writeRestricted: {
-    en: "Import access is limited to coordinator and IT roles.",
-    ta: "Import access coordinator மற்றும் IT roles-க்கு மட்டும்.",
-  },
-  operations: { en: "Operations", ta: "ஆபரேஷன்கள்" },
-  operation: { en: "Operation", ta: "ஆபரேஷன்" },
-  machine: { en: "Machine", ta: "மெஷின்" },
-  smv: { en: "SMV", ta: "SMV" },
-  sam: { en: "SAM", ta: "SAM" },
-  status: { en: "Status", ta: "நிலை" },
-  pendingImport: { en: "Pending import", ta: "Import pending" },
-  lockedSmv: { en: "Locked SMV", ta: "Locked SMV" },
-  fiveLoops: { en: "Five Loops", ta: "ஐந்து லூப்ஸ்" },
-  target: { en: "Target", ta: "டார்கெட்" },
-  operationCount: { en: "Operations", ta: "ஆபரேஷன்கள்" },
-  lockedCount: { en: "Locked SMVs", ta: "Locked SMV எண்ணிக்கை" },
-  pendingCount: { en: "Pending imports", ta: "Pending imports" },
 } satisfies Record<string, Copy>;
 
 export type CopyKey = keyof typeof copy;
