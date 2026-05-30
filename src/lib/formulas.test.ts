@@ -26,6 +26,8 @@ describe("training formulas", () => {
     expect(calculateStandardCapacityPph(0.627)).toBeCloseTo(95.69, 2);
   });
 
+  it("calculates SAM using the machine-specific allowance multiplier", () => {
+    expect(calculateSamFromBase(0.5, 1.24)).toBeCloseTo(0.62, 2);
   it("calculates SAM with machine-specific allowance multiplier", () => {
     expect(calculateSamFromBase(0.5, 1.32)).toBeCloseTo(0.66, 2);
   });

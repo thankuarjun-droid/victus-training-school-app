@@ -9,6 +9,20 @@ export type CurrentStaff = {
   role: StaffRole;
 };
 
+type StaffCandidate = {
+  id?: string | null;
+  name?: string | null;
+  role?: string | null;
+};
+
+function toCurrentStaff(data: StaffCandidate | null): CurrentStaff | null {
+  if (!data?.id || !data.name || !isStaffRole(data.role)) {
+    return null;
+  }
+
+  return { id: data.id, name: data.name, role: data.role };
+}
+
 export async function getCurrentStaff(): Promise<CurrentStaff | null> {
   if (!hasSupabaseConfig()) {
     return null;
@@ -23,18 +37,21 @@ export async function getCurrentStaff(): Promise<CurrentStaff | null> {
     return null;
   }
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("staff")
     .select("id,name,role")
     .eq("auth_uid", user.id)
     .eq("active", true)
     .single();
 
-  if (error || !data || !isStaffRole(data.role)) {
-    return null;
+  const currentStaff = toCurrentStaff(data);
+  if (currentStaff) {
+    return currentStaff;
   }
 
-  return { id: data.id, name: data.name, role: data.role };
+  const { data: bootstrappedStaff } = await supabase.rpc("claim_bootstrap_it_staff");
+
+  return toCurrentStaff(bootstrappedStaff);
 }
 
 export async function requireCurrentStaff(): Promise<CurrentStaff> {

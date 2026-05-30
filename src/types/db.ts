@@ -1,3 +1,4 @@
+import type { MachineCode } from "@/lib/master-data";
 import type { StaffRole } from "@/lib/roles";
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -31,6 +32,13 @@ type MachineTypeRow = {
   allowance_multiplier: number;
 };
 
+type MachineTypeInsert = {
+  id?: string;
+  code: MachineCode;
+  name: string;
+  allowance_multiplier: number;
+};
+
 type StyleRow = {
   id: string;
   code: string;
@@ -39,6 +47,16 @@ type StyleRow = {
   size: string | null;
   gsd_ob_ratio: number | null;
   created_at: string | null;
+};
+
+type StyleInsert = {
+  id?: string;
+  code: string;
+  name: string;
+  garment_type?: string | null;
+  size?: string | null;
+  gsd_ob_ratio?: number | null;
+  created_at?: string | null;
 };
 
 type OperationRow = {
@@ -54,6 +72,19 @@ type OperationRow = {
   sequence: number | null;
 };
 
+type OperationInsert = {
+  id?: string;
+  style_id?: string | null;
+  op_no: number;
+  name_en: string;
+  name_ta: string;
+  machine_type_id?: string | null;
+  smv_min?: number | null;
+  sam_min?: number | null;
+  is_critical?: string | null;
+  sequence?: number | null;
+};
+
 type OperationStepRow = {
   id: string;
   operation_id: string | null;
@@ -64,12 +95,30 @@ type OperationStepRow = {
   instruction_ta: string | null;
 };
 
+type OperationStepInsert = {
+  id?: string;
+  operation_id?: string | null;
+  step_no: number;
+  description_en?: string | null;
+  description_ta?: string | null;
+  instruction_en?: string | null;
+  instruction_ta?: string | null;
+};
+
 type OperationSkillAttrRow = {
   id: string;
   operation_id: string | null;
   attr_key: string;
   attr_value: string | null;
   exercise_stage: number | null;
+};
+
+type OperationSkillAttrInsert = {
+  id?: string;
+  operation_id?: string | null;
+  attr_key: string;
+  attr_value?: string | null;
+  exercise_stage?: number | null;
 };
 
 type QualityCheckpointRow = {
@@ -82,6 +131,14 @@ type QualityCheckpointRow = {
   tolerance: string | null;
 };
 
+type QualityCheckpointInsert = {
+  id?: string;
+  operation_id?: string | null;
+  checkpoint_no: number;
+  description_en: string;
+  description_ta: string;
+  check_method?: string | null;
+  tolerance?: string | null;
 
 type BatchRow = {
   id: string;
@@ -258,6 +315,12 @@ type LoopInsert = {
   target_unit?: string | null;
 };
 
+type Table<Row, Insert> = {
+  Row: Row;
+  Insert: Insert;
+  Update: Partial<Insert>;
+  Relationships: [];
+};
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -281,6 +344,7 @@ export type Database = {
       operation_skill_attrs: Table<OperationSkillAttrRow, OperationSkillAttrInsert>;
       quality_checkpoints: Table<QualityCheckpointRow, QualityCheckpointInsert>;
       loops: Table<LoopRow, LoopInsert>;
+      staff: Table<StaffRow, StaffInsert>;
     };
     Views: {
       v_panel_balance: {
@@ -299,6 +363,7 @@ export type Database = {
     Functions: {
       current_staff_role: { Args: Record<string, never>; Returns: StaffRole | null };
       current_staff_id: { Args: Record<string, never>; Returns: string | null };
+      claim_bootstrap_it_staff: { Args: Record<string, never>; Returns: StaffRow | null };
     };
     Enums: {
       staff_role: StaffRole;

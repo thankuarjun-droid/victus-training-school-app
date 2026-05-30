@@ -63,6 +63,12 @@ The Phase 0 migration seeds the five machine types and locked RONNY SMVs exactly
 
 All other RONNY operation SMVs remain pending import unless provided by the Phase 1 OB CSV import.
 
+### First live login bootstrap
+
+After applying the migrations, create the first Supabase Auth user in the dashboard and sign in through `/login`. If no active staff row has an `auth_uid` yet, the app calls the `claim_bootstrap_it_staff()` RPC once to attach that first authenticated user's Auth UUID to the seeded `Sudhagar` IT staff row. This gives the first live user the `it` role so they can create or update the remaining staff assignments from the app instead of running manual SQL.
+
+For production pilots, create and claim this first account deliberately before inviting other users; after any active staff row has an `auth_uid`, the bootstrap RPC returns no row for unassigned users.
+
 ## Phase 1 CSV import
 
 The `/master-data` route accepts CSV rows with these useful headers:
