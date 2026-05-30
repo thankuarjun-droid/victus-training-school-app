@@ -19,6 +19,49 @@ export type NavItem = {
 
 export const roleNav: Record<StaffRole, NavItem[]> = {
   school_trainer: [
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/time-study", labelKey: "timeStudy" },
+    { href: "/panels", labelKey: "panels" },
+    { href: "/registry", labelKey: "registry" },
+  ],
+  ojt_coach: [
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboard", labelKey: "dashboard" },
+  ],
+  lpi_coach: [
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboard", labelKey: "dashboard" },
+  ],
+  mechanic: [
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboard", labelKey: "dashboard" },
+  ],
+  coordinator: [
+    { href: "/dashboard", labelKey: "dashboard" },
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/time-study", labelKey: "timeStudy" },
+    { href: "/panels", labelKey: "panels" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboards", labelKey: "leadershipDashboards" },
+  ],
+  it: [
+    { href: "/dashboard", labelKey: "dashboard" },
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/time-study", labelKey: "timeStudy" },
+    { href: "/panels", labelKey: "panels" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboards", labelKey: "leadershipDashboards" },
+  ],
+  leadership: [
+    { href: "/master-data", labelKey: "masterData" },
+    { href: "/registry", labelKey: "registry" },
+    { href: "/dashboards", labelKey: "leadershipDashboards" },
+  ],
+};
+
     { href: "/time-study", labelKey: "timeStudy" },
     { href: "/panels", labelKey: "panels" },
     { href: "/batches", labelKey: "batch" },

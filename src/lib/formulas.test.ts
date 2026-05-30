@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   calculateOjtEfficiencyPct,
+  calculateSamFromBase,
   calculateSchoolEfficiencyPct,
   calculateStandardCapacityPph,
   summarizeCycles,
@@ -23,6 +24,10 @@ describe("training formulas", () => {
 
   it("calculates standard capacity from locked SMV", () => {
     expect(calculateStandardCapacityPph(0.627)).toBeCloseTo(95.69, 2);
+  });
+
+  it("calculates SAM with machine-specific allowance multiplier", () => {
+    expect(calculateSamFromBase(0.5, 1.32)).toBeCloseTo(0.66, 2);
   });
 
   it("uses the separate OJT line-efficiency formula", () => {
