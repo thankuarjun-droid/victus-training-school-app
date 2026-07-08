@@ -1,4 +1,3 @@
-import type { MachineCode } from "@/lib/master-data";
 import type { StaffRole } from "@/lib/roles";
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -24,6 +23,8 @@ type StaffInsert = {
   role: StaffRole;
   active?: boolean | null;
 };
+
+type StaffUpdate = Partial<StaffInsert>;
 
 type MachineTypeRow = {
   id: string;
@@ -139,6 +140,7 @@ type QualityCheckpointInsert = {
   description_ta: string;
   check_method?: string | null;
   tolerance?: string | null;
+};
 
 type BatchRow = {
   id: string;
@@ -148,6 +150,16 @@ type BatchRow = {
   capacity: number | null;
   trainer_id: string | null;
   status: string | null;
+};
+
+type BatchInsert = {
+  id?: string;
+  batch_no: string;
+  start_date?: string | null;
+  room?: string | null;
+  capacity?: number | null;
+  trainer_id?: string | null;
+  status?: string | null;
 };
 
 type TraineeRow = {
@@ -165,6 +177,20 @@ type TraineeRow = {
   created_at: string | null;
 };
 
+type TraineeInsert = {
+  id?: string;
+  emp_code?: string | null;
+  name: string;
+  gender?: string | null;
+  dob?: string | null;
+  join_date?: string | null;
+  phone?: string | null;
+  batch_id?: string | null;
+  assigned_operation_id?: string | null;
+  assigned_trainer_id?: string | null;
+  status?: TraineeStatus | null;
+  created_at?: string | null;
+};
 
 type PanelTypeRow = {
   id: string;
@@ -172,6 +198,14 @@ type PanelTypeRow = {
   name_en: string;
   name_ta: string | null;
   cascade_order: number | null;
+};
+
+type PanelTypeInsert = {
+  id?: string;
+  style_id?: string | null;
+  name_en: string;
+  name_ta?: string | null;
+  cascade_order?: number | null;
 };
 
 type PanelTransactionRow = {
@@ -188,6 +222,22 @@ type PanelTransactionRow = {
   staff_id: string | null;
   condition: string | null;
   notes: string | null;
+};
+
+type PanelTransactionInsert = {
+  id?: string;
+  txn_type: PanelTxnType;
+  panel_type_id?: string | null;
+  qty: number;
+  txn_date?: string | null;
+  received_from?: string | null;
+  cutting_ref?: string | null;
+  trainee_id?: string | null;
+  operation_id?: string | null;
+  from_operation_id?: string | null;
+  staff_id?: string | null;
+  condition?: string | null;
+  notes?: string | null;
 };
 
 type PanelBalanceRow = {
@@ -207,103 +257,6 @@ type LoopRow = {
   target_unit: string | null;
 };
 
-type StaffUpdate = Partial<StaffInsert>;
-type MachineTypeInsert = { id?: string; code: MachineCode; name: string; allowance_multiplier: number };
-type StyleInsert = {
-  id?: string;
-  code: string;
-  name: string;
-  garment_type?: string | null;
-  size?: string | null;
-  gsd_ob_ratio?: number | null;
-  created_at?: string | null;
-};
-type OperationInsert = {
-  id?: string;
-  style_id?: string | null;
-  op_no: number;
-  name_en: string;
-  name_ta: string;
-  machine_type_id?: string | null;
-  smv_min?: number | null;
-  sam_min?: number | null;
-  is_critical?: string | null;
-  sequence?: number | null;
-};
-type OperationStepInsert = {
-  id?: string;
-  operation_id?: string | null;
-  step_no: number;
-  description_en?: string | null;
-  description_ta?: string | null;
-  instruction_en?: string | null;
-  instruction_ta?: string | null;
-};
-type OperationSkillAttrInsert = {
-  id?: string;
-  operation_id?: string | null;
-  attr_key: string;
-  attr_value?: string | null;
-  exercise_stage?: number | null;
-};
-type QualityCheckpointInsert = {
-  id?: string;
-  operation_id?: string | null;
-  checkpoint_no: number;
-  description_en: string;
-  description_ta: string;
-  check_method?: string | null;
-  tolerance?: string | null;
-};
-
-type BatchInsert = {
-  id?: string;
-  batch_no: string;
-  start_date?: string | null;
-  room?: string | null;
-  capacity?: number | null;
-  trainer_id?: string | null;
-  status?: string | null;
-};
-type TraineeInsert = {
-  id?: string;
-  emp_code?: string | null;
-  name: string;
-  gender?: string | null;
-  dob?: string | null;
-  join_date?: string | null;
-  phone?: string | null;
-  batch_id?: string | null;
-  assigned_operation_id?: string | null;
-  assigned_trainer_id?: string | null;
-  status?: TraineeStatus | null;
-  created_at?: string | null;
-};
-
-
-type PanelTypeInsert = {
-  id?: string;
-  style_id?: string | null;
-  name_en: string;
-  name_ta?: string | null;
-  cascade_order?: number | null;
-};
-type PanelTransactionInsert = {
-  id?: string;
-  txn_type: PanelTxnType;
-  panel_type_id?: string | null;
-  qty: number;
-  txn_date?: string | null;
-  received_from?: string | null;
-  cutting_ref?: string | null;
-  trainee_id?: string | null;
-  operation_id?: string | null;
-  from_operation_id?: string | null;
-  staff_id?: string | null;
-  condition?: string | null;
-  notes?: string | null;
-};
-
 type LoopInsert = {
   id?: string;
   loop_no: number;
@@ -315,19 +268,12 @@ type LoopInsert = {
   target_unit?: string | null;
 };
 
-type Table<Row, Insert> = {
-  Row: Row;
-  Insert: Insert;
-  Update: Partial<Insert>;
-  Relationships: [];
-};
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
   Update: Update;
   Relationships: [];
 };
-type StaffUpdate = Partial<StaffInsert>;
 
 export type Database = {
   public: {
@@ -344,7 +290,6 @@ export type Database = {
       operation_skill_attrs: Table<OperationSkillAttrRow, OperationSkillAttrInsert>;
       quality_checkpoints: Table<QualityCheckpointRow, QualityCheckpointInsert>;
       loops: Table<LoopRow, LoopInsert>;
-      staff: Table<StaffRow, StaffInsert>;
     };
     Views: {
       v_panel_balance: {
@@ -352,14 +297,6 @@ export type Database = {
         Relationships: [];
       };
     };
-      staff: {
-        Row: StaffRow;
-        Insert: StaffInsert;
-        Update: StaffUpdate;
-        Relationships: [];
-      };
-    };
-    Views: Record<string, never>;
     Functions: {
       current_staff_role: { Args: Record<string, never>; Returns: StaffRole | null };
       current_staff_id: { Args: Record<string, never>; Returns: string | null };
@@ -370,7 +307,6 @@ export type Database = {
       machine_code: MachineCode;
       trainee_status: TraineeStatus;
       panel_txn: PanelTxnType;
-      machine_code: "SNLS" | "4T_OL" | "F_LTR" | "F_LFO" | "F_LCB";
     };
     CompositeTypes: Record<string, never>;
   };

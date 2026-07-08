@@ -42,11 +42,6 @@ export function calculateStandardCapacityPph(smvMin: number): number {
   return 60 / smvMin;
 }
 
-export function calculateSamFromBase(baseMin: number, allowanceMultiplier: number): number {
-  assertPositiveNumber(baseMin, "base time");
-  assertPositiveNumber(allowanceMultiplier, "allowance multiplier");
-
-  return baseMin * allowanceMultiplier;
 export function calculateSamFromBase(baseTimeMin: number, machineAllowanceMultiplier: number): number {
   assertPositiveNumber(baseTimeMin, "base time");
   assertPositiveNumber(machineAllowanceMultiplier, "machine allowance multiplier");
